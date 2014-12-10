@@ -928,6 +928,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void UpdateHomework(int sectionId, double homeworkId, String UUID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String strSQL = "UPDATE homework SET HomeworkId =  " + homeworkId + " " +
+                "WHERE SectionId = " +
+                sectionId + " AND TeacherUUID = '" + UUID + "'";
+        db.execSQL(strSQL);
+        db.close();
+    }
+
     boolean criteriaExist(String criteriaName, int homeworkId, String UUID) {
         SQLiteDatabase db = this.getReadableDatabase();
 
