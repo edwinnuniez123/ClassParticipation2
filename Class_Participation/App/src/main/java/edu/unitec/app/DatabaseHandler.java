@@ -913,14 +913,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
             cursor.close();
             //Eliminar referencia de la seccion de tabla de Tares
-            strSQL = "DELETE FROM homework WHERE SectionId=" + toDelete.get(i);
-            db.execSQL(strSQL);
+            //strSQL = "DELETE FROM homework WHERE SectionId=" + toDelete.get(i);
+           // db.execSQL(strSQL);
 
 
-
-            //Eliminar referencia del criterio de tabla de criteria
-            strSQL = "DELETE FROM criteria WHERE CriteriaId=" + toDelete.get(i);
-            db.execSQL(strSQL);
 
 
 
