@@ -647,6 +647,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
     boolean studentExist(String studentEmail) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + STU_ID + " FROM " + TABLE_STUDENT + " WHERE " + STU_EMAIL + " = '" + studentEmail + "'", null);
@@ -894,6 +895,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return false;
+    }
+
+    void deleteHomework(ArrayList<Integer> toDelete) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String strSQL;
+        for (int i = 0; i < toDelete.size(); i++) {
+            //Eliminar referencia de Tarea de tabla de Criteria por Seccion
+            List<Participation> currentStudentParticipationList = new ArrayList<Participation>();
+            String query = "SELECT HomeworkId FROM homework WHERE SectionId=" + toDelete.get(i);
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    strSQL = "DELETE FROM criteria WHERE HomeworkId=" + cursor.getInt(0);
+                    db.execSQL(strSQL);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            //Eliminar referencia de la seccion de tabla de Tares
+            strSQL = "DELETE FROM homework WHERE SectionId=" + toDelete.get(i);
+            db.execSQL(strSQL);
+
+
+
+            //Eliminar referencia del criterio de tabla de criteria
+            strSQL = "DELETE FROM criteria WHERE CriteriaId=" + toDelete.get(i);
+            db.execSQL(strSQL);
+
+
+
+        }
+        db.close();
     }
 
     boolean criteriaExist(String criteriaName, int homeworkId, String UUID) {
